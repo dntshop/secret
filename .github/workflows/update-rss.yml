@@ -14,7 +14,7 @@ jobs:
 
       - name: Fetch RSS Feed
         run: |
-          curl -o rss-feed.xml https://script.google.com/macros/s/AKfycbz6fFl06ZlWtzrngK18Nu2d4KIizfxDNudEtXGpEp8CR_tOE9gkYR67NWEXccfRO0Vo/exec
+          curl -o rss-feed.xml https://script.googleusercontent.com/macros/echo?user_content_key=aRCxBTuZCPif9a_o3Z2_WZV8g9TsA44mBT9DnV5aByBWYdAkBQZj6qDiuxFWplpbNVBywBkrBwytYlRaIYhFcdyw-D8zP9Zqm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnIlYPDvaTrpD0aKxgnaoMq9-dZVhOWs7bt3QYH94E-DUmSyvri7Yh8_32O-Kh1WJbk8d_jp-eamebUp9bNjn7KzgHKSMUKnzVA&lib=MiUzUVuCjnuXmS00a09q869IBhQp5HVC7
 
       - name: Commit and push RSS Feed
         run: |
