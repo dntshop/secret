@@ -8,8 +8,15 @@ curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 $content = curl_exec($ch);
 curl_close($ch);
 
-// Установка заголовков
-header('Content-Type: application/rss+xml');
+// Проверка ошибок cURL
+if ($content === false) {
+    header('Content-Type: text/plain');
+    echo 'Ошибка при получении данных.';
+    exit;
+}
+
+// Установка заголовков для RSS
+header('Content-Type: application/rss+xml; charset=utf-8');
 
 // Вывод содержимого
 echo $content;
