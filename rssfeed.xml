@@ -1,77 +1,19 @@
-function doGet(e) {
-  return generateRssFeed();
-}
+<?php
+// URL страницы, откуда нужно получить контент
+$url = 'https://script.google.com/macros/s/AKfycbyEs3mt_3hDVGnc0bMDIsgJIpH3BMvjxfLrTtJ0ZikSedlJ-UT_0vYkPTerT6VCHCUa/exec';
 
-function updateRssFeed() {
-  generateRssFeed();
-}
+// Инициализируем cURL
+$ch = curl_init($url);
 
-function generateRssFeed() {
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Лист1'); // Замените 'Лист1' на имя вашего листа
-  if (!sheet) {
-    return ContentService.createTextOutput('Sheet not found').setMimeType(ContentService.MimeType.TEXT);
-  }
-  var range = sheet.getDataRange();
-  var values = range.getValues();
+// Устанавливаем опции для cURL
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-  var xml = '<?xml version="1.0" encoding="UTF-8"?>';
-  xml += '<rss version="2.0">';
-  xml += '<channel>';
-  xml += '<title>weight loss transformation</title>'; // Замените на название вашего канала
-  xml += '<link>https://dntshop.github.io/secret//</link>'; // Замените на ваш сайт
-  xml += '<description>Want an effective weight loss program? Discover our best diet programs that are proven to be effective. Whether you’re interested in a one month weight loss plan or personalized diet plans, we offer options for women</description>'; // Замените на описание вашего канала
+// Выполняем запрос и сохраняем результат в переменной
+$content = curl_exec($ch);
 
-  var today = new Date();
-  var itemCount = 0; // Счетчик для проверки количества элементов
+// Закрываем cURL
+curl_close($ch);
 
-  for (var i = 1; i < values.length; i++) {
-    var title = values[i][0];
-    var mediaUrl = values[i][1];
-    var pinterestBoard = values[i][2];
-    var thumbnail = values[i][3];
-    var description = values[i][4];
-    var link = values[i][5];
-    var publishDate = new Date(values[i][6]);
-    var keywords = values[i][7];
-
-    // Проверка обязательных полей
-    if (!title || !mediaUrl || !pinterestBoard) {
-      Logger.log('Row ' + i + ' is missing required fields.');
-      continue;
-    }
-
-    // Логирование для отладки
-    Logger.log('Row ' + i + ': ' + title + ', ' + mediaUrl + ', ' + pinterestBoard + ', ' + thumbnail + ', ' + description + ', ' + link + ', ' + publishDate + ', ' + keywords);
-
-    // Публикация только в соответствии с Publish date
-    if (publishDate <= today) {
-      xml += '<item>';
-      xml += '<title>' + title + '</title>';
-      xml += '<link>' + (link || mediaUrl) + '</link>'; // Используем link, если он есть, иначе mediaUrl
-      xml += '<description>';
-      if (description) {
-        xml += description + ' ';
-      }
-      xml += '<img src="' + mediaUrl + '"/>';
-      if (thumbnail) {
-        xml += ' <img src="' + thumbnail + '"/>';
-      }
-      xml += '</description>';
-      xml += '<pubDate>' + publishDate.toUTCString() + '</pubDate>';
-      xml += '<category>' + pinterestBoard + '</category>';
-      if (keywords) {
-        xml += '<keywords>' + keywords + '</keywords>';
-      }
-      xml += '</item>';
-      itemCount++;
-    }
-  }
-
-  xml += '</channel>';
-  xml += '</rss>';
-
-  // Логирование для проверки количества элементов
-  Logger.log('Total items: ' + itemCount);
-
-  return ContentService.createTextOutput(xml).setMimeType(ContentService.MimeType.XML);
-}
+// Отображаем полученный контент
+echo $content;
+?>
