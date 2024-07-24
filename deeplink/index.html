@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirect to GitHub</title>
+    <script>
+        function getMobileOperatingSystem() {
+            var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+            if (/android/i.test(userAgent)) {
+                return "Android";
+            }
+
+            if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                return "iOS";
+            }
+
+            return "unknown";
+        }
+
+        function redirect() {
+            var os = getMobileOperatingSystem();
+            var url = "https://tracking-64ccd8bd122f3.plat-clicks.com/go/1ef46a76-00e1-68c2-a849-265c7b50c63a?ProfID={secret1}&username={username}";
+
+            if (os === "Android") {
+                // Android - попытка открыть ссылку в Chrome
+                window.location.href = "intent://github.com/#Intent;scheme=https;package=com.android.chrome;end";
+            } else if (os === "iOS") {
+                // iOS - попытка открыть ссылку в Safari
+                var a = document.createElement('a');
+                a.setAttribute('href', url);
+                a.setAttribute('target', '_blank');
+                var dispatch = document.createEvent("HTMLEvents");
+                dispatch.initEvent("click", true, true);
+                a.dispatchEvent(dispatch);
+            } else {
+                // Другие устройства - просто редирект
+                window.location.href = url;
+            }
+        }
+
+        window.onload = redirect;
+    </script>
+</head>
+<body>
+    <p>Redirecting</p>
+</body>
+</html>
